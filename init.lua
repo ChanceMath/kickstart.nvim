@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -120,6 +120,8 @@ end)
 
 -- Enable break indent
 vim.opt.breakindent = true
+
+vim.o.guifont = 'InconsolataGo Nerd Font Mono:h11'
 
 -- Save undo history
 vim.opt.undofile = true
@@ -884,7 +886,91 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
+  {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      local dashboard = require 'dashboard'
+      local logo = [[
+                 ▄▄██████████▄▄             ',
+                 ▀▀▀   ██   ▀▀▀             
+         ▄██▄   ▄▄████████████▄▄   ▄██▄     
+       ▄███▀  ▄████▀▀▀    ▀▀▀████▄  ▀███▄   
+      ████▄ ▄███▀              ▀███▄ ▄████  
+     ███▀█████▀▄████▄      ▄████▄▀█████▀███ 
+     ██▀  ███▀ ██████      ██████ ▀███  ▀██ 
+      ▀  ▄██▀  ▀████▀  ▄▄  ▀████▀  ▀██▄  ▀  
+         ███           ▀▀           ███     
+         ██████████████████████████████     
+     ▄█  ▀██  ███   ██    ██   ███  ██▀  █▄ 
+     ███  ███ ███   ██    ██   ███▄███  ███ 
+     ▀██▄████████   ██    ██   ████████▄██▀ 
+      ▀███▀ ▀████   ██    ██   ████▀ ▀███▀  
+       ▀███▄  ▀███████    ███████▀  ▄███▀   
+         ▀███    ▀▀██████████▀▀▀   ███▀     
+           ▀    ▄▄▄    ██    ▄▄▄    ▀       
+                 ▀████████████▀              
+    ]]
+
+      dashboard.setup {
+        theme = 'doom',
+        config = {
+          header = vim.split(logo, '\n'),
+          center = {
+            {
+              icon = '{}  ',
+              icon_hl = 'Title',
+              desc = 'Find File',
+              desc_hl = 'String',
+              key = 'f',
+              key_hl = 'Number',
+              action = 'Telescope find_files',
+            },
+            {
+              icon = '{}  ',
+              desc = 'New File     ',
+              key = 'n',
+              action = 'enew',
+            },
+            {
+              icon = '{}  ',
+              desc = 'Recent Files     ',
+              key = 'r',
+              action = 'Telescope oldfiles',
+            },
+            {
+              icon = '{}  ',
+              desc = 'Find Text     ',
+              key = 'g',
+              action = 'Telescope live_grep',
+            },
+            {
+              icon = '{}  ',
+              desc = 'Config     ',
+              key = 'c',
+              action = 'e $MYVIMRC',
+            },
+            {
+              icon = '{}  ',
+              desc = 'Restore Session     ',
+              key = 's',
+              action = 'SessionLoad',
+            },
+          },
+          footer = {}, -- No footer in this example
+        },
+      }
+      local blue = '#61afef' -- You can adjust this blue color as needed
+      vim.api.nvim_set_hl(0, 'DashboardHeader', { fg = blue })
+      vim.api.nvim_set_hl(0, 'DashboardCenter', { fg = blue })
+      vim.api.nvim_set_hl(0, 'DashboardShortcut', { fg = blue })
+      vim.api.nvim_set_hl(0, 'DashboardFooter', { fg = blue })
+    end,
+    dependencies = {
+      { 'nvim-tree/nvim-web-devicons' },
+    },
+  },
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -897,21 +983,7 @@ require('lazy').setup({
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
+    icons = vim.g.have_nerd_font and {} or {},
   },
 })
 
